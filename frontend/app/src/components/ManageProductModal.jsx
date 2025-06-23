@@ -25,6 +25,7 @@ const ManageProductModal = ({ show, onClose, product, onSave }) => {
   }, [product]);
 
   const handleChange = (e) => {
+
     setFormData({
       ...formData,
       [e.target.name]: e.target.value

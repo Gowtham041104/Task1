@@ -32,21 +32,27 @@ const ProductScreen = () => {
     setShowModal(true);
   };
 
-  const handleDeleteProduct = (id) => {
-    if (window.confirm('Are you sure you want to delete this product?')) {
-      dispatch(deleteProduct(id));
-    }
-  };
-
-  const handleSaveProduct = (formData) => {
-    if (selectedProduct) {
-      dispatch(updateProduct(selectedProduct._id, formData));
-    } else {
-      dispatch(createProduct(formData));
-    }
-    setShowModal(false);
-  };
-
+const handleDeleteProduct = (id) => {
+  if (window.confirm('Are you sure you want to delete this product?')) {
+    dispatch(deleteProduct(id)).then(() => {
+      dispatch(listProducts());  // Refresh product list after delete
+    });
+  }
+};
+const handleSaveProduct = (formData) => {
+  if (selectedProduct) {
+    dispatch(updateProduct(selectedProduct._id, formData))
+      .then(() => {
+        dispatch(listProducts()); // Refresh the product list
+      });
+  } else {
+    dispatch(createProduct(formData))
+      .then(() => {
+        dispatch(listProducts()); // Refresh after create
+      });
+  }
+  setShowModal(false);
+};
   return (
     <div className="container mt-4">
       <h2 className="mb-4">Manage Product Features</h2>

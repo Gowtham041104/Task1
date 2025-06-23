@@ -8,10 +8,10 @@ const ProductList = ({ products, onEdit, onDelete }) => {
         <div className="col-md-4 mb-3" key={product._id}>
           <Card>
             <Card.Body>
-              <Card.Title>{product.name}</Card.Title>
-              <Card.Text>{product.description}</Card.Text>
+              <Card.Title><strong>Product Name :</strong>{product.name}</Card.Title>
+              <Card.Text>Description :{product.description}</Card.Text>
               <Card.Text>
-                <small>Status: {product.status}</small>
+                Status: {product.Status}
               </Card.Text>
               <Button
                 variant="warning"

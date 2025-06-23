@@ -100,6 +100,10 @@ export const createProduct = (productData) => async (dispatch, getState) => {
       type: PRODUCT_CREATE_SUCCESS,
       payload: data,
     });
+
+    // ✅ Refresh the list so your UI updates
+    dispatch(listProducts());
+
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_FAIL,
