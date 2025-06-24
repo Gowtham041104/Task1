@@ -1,6 +1,5 @@
 {
   "name": "app",
-  "proxy": "https://task1-v3ir.vercel.app/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
