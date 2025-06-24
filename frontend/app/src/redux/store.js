@@ -51,7 +51,7 @@ const store = configureStore({
     productUpdate: productUpdateReducer,
     productDelete: productDeleteReducer,
     productsByTenant: productsByTenantReducer,
-     productUpdate: productUpdateReducer,
+  
   },
   preloadedState,
   devTools: process.env.NODE_ENV !== 'production',
