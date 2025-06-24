@@ -1,4 +1,4 @@
-const apiUrl =REACT_APP_API_URL = 'https://task1-v3ir.vercel.app/'
+const apiUrl = process.env.REACT_APP_API_URL || 'https://task1-v3ir.vercel.app';
 const handleResponse = async (res) => {
   if (!res.ok) {
     let error = 'API request failed';
