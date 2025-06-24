@@ -1,4 +1,7 @@
+// Set API URL from env or fallback to deployed backend
 const apiUrl = process.env.REACT_APP_API_URL || 'https://task1-v3ir.vercel.app';
+
+// Handle API responses
 const handleResponse = async (res) => {
   if (!res.ok) {
     let error = 'API request failed';
@@ -6,7 +9,7 @@ const handleResponse = async (res) => {
       const data = await res.json();
       error = data.message || error;
     } catch {
-      // If response is not JSON
+      // response body is not JSON
     }
     throw new Error(error);
   }
