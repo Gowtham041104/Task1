@@ -1,6 +1,6 @@
 {
   "name": "app",
-  "proxy": "https://task1-xpsu.vercel.app",
+  "proxy": "https://task1-xpsu-git-main-gowtham041104s-projects.vercel.app/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
