@@ -9,10 +9,11 @@ import {
   USER_REGISTER_FAIL,
 } from '../constants/userConstants';
 
+// Your API URL
+const apiUrl = process.env.REACT_APP_API_URL || 'https://task1-v3ir.vercel.app';
+
 /**
  * User login action
- * @param {string} email - User email
- * @param {string} password - User password
  */
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -25,7 +26,7 @@ export const login = (email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      '/api/auth/login', 
+      `${apiUrl}/api/auth/login`, 
       { email, password }, 
       config
     );
@@ -48,9 +49,6 @@ export const login = (email, password) => async (dispatch) => {
 
 /**
  * User registration action
- * @param {string} name - User name
- * @param {string} email - User email
- * @param {string} password - User password
  */
 export const register = (username, email, password) => async (dispatch) => {
   try {
@@ -63,8 +61,8 @@ export const register = (username, email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      '/api/auth/signup',
-      { username, email, password }, // ✅ Corrected here
+      `${apiUrl}/api/auth/signup`,
+      { username, email, password },
       config
     );
 
@@ -80,21 +78,17 @@ export const register = (username, email, password) => async (dispatch) => {
     });
   }
 };
+
 /**
  * User logout action
  */
 export const logout = () => (dispatch) => {
-  // Remove user data from localStorage
   localStorage.removeItem('userInfo');
-  
-  // Dispatch logout action
   dispatch({ type: USER_LOGOUT });
-  
-  // Optional: Clear any other user-related data
   localStorage.removeItem('cartItems');
   localStorage.removeItem('shippingAddress');
   localStorage.removeItem('paymentMethod');
 };
 
-// For backward compatibility
+// Alias
 export const signup = register;

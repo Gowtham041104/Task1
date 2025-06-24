@@ -17,11 +17,14 @@ import {
   TENANT_DETAILS_FAIL,
 } from '../constants/tenantConstant';
 
+// 🌟 API URL — make sure REACT_APP_API_URL is set in Netlify
+const apiUrl = process.env.REACT_APP_API_URL || 'https://task1-v3ir.vercel.app';
+
 // 🔹 List all tenants
 export const listTenants = () => async (dispatch) => {
   try {
     dispatch({ type: TENANT_LIST_REQUEST });
-    const { data } = await axios.get('/api/tenants');
+    const { data } = await axios.get(`${apiUrl}/api/tenants`);
     dispatch({ type: TENANT_LIST_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -56,7 +59,7 @@ export const createTenant = (tenantData) => async (dispatch, getState) => {
       createdBy: userInfo.userId || userInfo._id,
     };
 
-    const { data } = await axios.post('/api/tenants', payload, config);
+    const { data } = await axios.post(`${apiUrl}/api/tenants`, payload, config);
 
     dispatch({ type: TENANT_CREATE_SUCCESS, payload: data });
   } catch (error) {
@@ -87,7 +90,7 @@ export const updateTenant = (id, tenantData) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.put(`/api/tenants/${id}`, tenantData, config);
+    const { data } = await axios.put(`${apiUrl}/api/tenants/${id}`, tenantData, config);
 
     dispatch({ type: TENANT_UPDATE_SUCCESS, payload: data });
   } catch (error) {
@@ -117,7 +120,7 @@ export const deleteTenant = (id) => async (dispatch, getState) => {
       },
     };
 
-    await axios.delete(`/api/tenants/${id}`, config);
+    await axios.delete(`${apiUrl}/api/tenants/${id}`, config);
 
     dispatch({ type: TENANT_DELETE_SUCCESS, payload: id });
   } catch (error) {
@@ -147,7 +150,7 @@ export const getTenantDetails = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/tenants/${id}`, config);
+    const { data } = await axios.get(`${apiUrl}/api/tenants/${id}`, config);
 
     dispatch({ type: TENANT_DETAILS_SUCCESS, payload: data });
   } catch (error) {

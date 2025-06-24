@@ -23,6 +23,9 @@ import {
   PRODUCT_UPDATE_FEATURES_FAIL,
 } from '../constants/productConstant';
 
+// 🌟 API base URL from environment variable or fallback
+const apiUrl = process.env.REACT_APP_API_URL || 'https://task1-v3ir.vercel.app';
+
 /**
  * Fetch all products
  */
@@ -37,12 +40,9 @@ export const listProducts = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get('/api/products', config);
+    const { data } = await axios.get(`${apiUrl}/api/products`, config);
 
-    dispatch({
-      type: PRODUCT_LIST_SUCCESS,
-      payload: data,
-    });
+    dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_FAIL,
@@ -65,12 +65,9 @@ export const listProductsByTenant = (tenantId) => async (dispatch, getState) => 
       },
     };
 
-    const { data } = await axios.get(`/api/products/tenant/${tenantId}`, config);
+    const { data } = await axios.get(`${apiUrl}/api/products/tenant/${tenantId}`, config);
 
-    dispatch({
-      type: PRODUCT_BY_TENANT_SUCCESS,
-      payload: data,
-    });
+    dispatch({ type: PRODUCT_BY_TENANT_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: PRODUCT_BY_TENANT_FAIL,
@@ -94,16 +91,11 @@ export const createProduct = (productData) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.post('/api/products', productData, config);
+    const { data } = await axios.post(`${apiUrl}/api/products`, productData, config);
 
-    dispatch({
-      type: PRODUCT_CREATE_SUCCESS,
-      payload: data,
-    });
+    dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data });
 
-    // ✅ Refresh the list so your UI updates
     dispatch(listProducts());
-
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_FAIL,
@@ -127,12 +119,9 @@ export const updateProduct = (id, productData) => async (dispatch, getState) => 
       },
     };
 
-    const { data } = await axios.put(`/api/products/${id}`, productData, config);
+    const { data } = await axios.put(`${apiUrl}/api/products/${id}`, productData, config);
 
-    dispatch({
-      type: PRODUCT_UPDATE_SUCCESS,
-      payload: data,
-    });
+    dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: PRODUCT_UPDATE_FAIL,
@@ -155,12 +144,9 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
       },
     };
 
-    await axios.delete(`/api/products/${id}`, config);
+    await axios.delete(`${apiUrl}/api/products/${id}`, config);
 
-    dispatch({
-      type: PRODUCT_DELETE_SUCCESS,
-      payload: id,
-    });
+    dispatch({ type: PRODUCT_DELETE_SUCCESS, payload: id });
   } catch (error) {
     dispatch({
       type: PRODUCT_DELETE_FAIL,
@@ -183,12 +169,9 @@ export const getProductDetails = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/products/${id}`, config);
+    const { data } = await axios.get(`${apiUrl}/api/products/${id}`, config);
 
-    dispatch({
-      type: PRODUCT_DETAILS_SUCCESS,
-      payload: data,
-    });
+    dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: PRODUCT_DETAILS_FAIL,
@@ -212,12 +195,9 @@ export const updateProductFeatures = (id, features) => async (dispatch, getState
       },
     };
 
-    const { data } = await axios.put(`/api/products/${id}/features`, { features }, config);
+    const { data } = await axios.put(`${apiUrl}/api/products/${id}/features`, { features }, config);
 
-    dispatch({
-      type: PRODUCT_UPDATE_FEATURES_SUCCESS,
-      payload: data,
-    });
+    dispatch({ type: PRODUCT_UPDATE_FEATURES_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: PRODUCT_UPDATE_FEATURES_FAIL,
