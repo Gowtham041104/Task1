@@ -1,4 +1,4 @@
-const apiUrl = process.env.REACT_APP_API_URL || 'https://task1-xpsu.vercel.app';
+const apiUrl =REACT_APP_API_URL = 'https://task1-xpsu.vercel.app'
 
 const handleResponse = async (res) => {
   if (!res.ok) {
