@@ -1,7 +1,8 @@
-// Set API URL from env or fallback to deployed backend
+// src/api.js
+
 const apiUrl = process.env.REACT_APP_API_URL || 'https://task1-v3ir.vercel.app';
 
-// Handle API responses
+// Helper to handle response
 const handleResponse = async (res) => {
   if (!res.ok) {
     let error = 'API request failed';
@@ -9,49 +10,30 @@ const handleResponse = async (res) => {
       const data = await res.json();
       error = data.message || error;
     } catch {
-      // response body is not JSON
+      // not JSON
     }
     throw new Error(error);
   }
   return res.json();
 };
 
-// 🟢 PRODUCTS
+// Helper to get auth headers
+const authHeader = () => {
+  const userInfo = JSON.parse(localStorage.getItem('userInfo')) || {};
+  if (userInfo.token) {
+    return { Authorization: `Bearer ${userInfo.token}` };
+  }
+  return {};
+};
+
+// 🟢 Fetch products
 export const fetchProducts = () => {
-  return fetch(`${apiUrl}/api/products`).then(handleResponse);
-};
-
-export const createProduct = (productData) => {
   return fetch(`${apiUrl}/api/products`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(productData),
+    headers: { ...authHeader() }
   }).then(handleResponse);
 };
 
-export const updateProduct = (id, productData) => {
-  return fetch(`${apiUrl}/api/products/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(productData),
-  }).then(handleResponse);
-};
-
-export const deleteProduct = (id) => {
-  return fetch(`${apiUrl}/api/products/${id}`, {
-    method: 'DELETE',
-  }).then(handleResponse);
-};
-
-// 🟢 AUTH
-export const signup = (email, password) => {
-  return fetch(`${apiUrl}/api/auth/signup`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
-  }).then(handleResponse);
-};
-
+// 🟢 Login
 export const login = (email, password) => {
   return fetch(`${apiUrl}/api/auth/login`, {
     method: 'POST',
@@ -60,29 +42,43 @@ export const login = (email, password) => {
   }).then(handleResponse);
 };
 
-// 🟢 TENANTS
-export const fetchTenants = () => {
-  return fetch(`${apiUrl}/api/tenants`).then(handleResponse);
-};
-
-export const createTenant = (tenantData) => {
-  return fetch(`${apiUrl}/api/tenants`, {
+// 🟢 Signup
+export const signup = (email, password) => {
+  return fetch(`${apiUrl}/api/auth/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(tenantData),
+    body: JSON.stringify({ email, password }),
   }).then(handleResponse);
 };
 
-export const updateTenant = (id, tenantData) => {
-  return fetch(`${apiUrl}/api/tenants/${id}`, {
+// 🟢 Create product
+export const createProduct = (productData) => {
+  return fetch(`${apiUrl}/api/products`, {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      ...authHeader(),
+    },
+    body: JSON.stringify(productData),
+  }).then(handleResponse);
+};
+
+// 🟢 Update product
+export const updateProduct = (id, productData) => {
+  return fetch(`${apiUrl}/api/products/${id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(tenantData),
+    headers: { 
+      'Content-Type': 'application/json',
+      ...authHeader(),
+    },
+    body: JSON.stringify(productData),
   }).then(handleResponse);
 };
 
-export const deleteTenant = (id) => {
-  return fetch(`${apiUrl}/api/tenants/${id}`, {
+// 🟢 Delete product
+export const deleteProduct = (id) => {
+  return fetch(`${apiUrl}/api/products/${id}`, {
     method: 'DELETE',
+    headers: { ...authHeader() }
   }).then(handleResponse);
 };
