@@ -18,12 +18,11 @@ const SignupScreen = () => {
 
   const userRegister = useSelector((state) => state.userRegister || {});
   const { loading, error, userInfo } = userRegister;
-
-  useEffect(() => {
-    if (userInfo) {
-      navigate('/login'); // Only go to dashboard if user is successfully registered
-    }
-  }, [userInfo, navigate]);
+useEffect(() => {
+  if (userInfo) {
+    navigate('/login');
+  }
+}, [userInfo, navigate]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
