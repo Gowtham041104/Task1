@@ -10,16 +10,21 @@ dotenv.config();
 connectDb();
 
 const app = express();
+
+// ✅ CORS setup - allow your frontend domain
 app.use(cors({
-  origin: ['https://saasmanage.netlify.app'],
+  origin: ['http://localhost:3000', 'https://saasmanage.netlify.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 app.use(express.json());
 
+// ✅ API routes
 app.get('/', (req, res) => res.send('API is running'));
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/tenants', tenantRoutes);
 
+// ❗ DO NOT CALL app.listen() — Vercel handles it
 module.exports = app;
