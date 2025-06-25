@@ -11,13 +11,13 @@ connectDb();
 
 const app = express();
 
-// ✅ CORS setup - allow your frontend domain
 app.use(cors({
   origin: ['http://localhost:3000', 'https://saasmanage.netlify.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204 // ✅ Important: respond properly to OPTIONS
 }));
-
 app.use(express.json());
 
 // ✅ API routes
