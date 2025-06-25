@@ -12,19 +12,18 @@ connectDb();
 const app = express();
 
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://saasmanage.netlify.app'],
+  origin: ['https://saasmange.netlify.app'],  // Only production frontend
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  preflightContinue: false,
-  optionsSuccessStatus: 204 // ✅ Important: respond properly to OPTIONS
+  optionsSuccessStatus: 204 // ✅ ensure OPTIONS replies cleanly
 }));
+
 app.use(express.json());
 
-// ✅ API routes
 app.get('/', (req, res) => res.send('API is running'));
+
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/tenants', tenantRoutes);
 
-// ❗ DO NOT CALL app.listen() — Vercel handles it
 module.exports = app;
