@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {
   TENANT_LIST_REQUEST,
   TENANT_LIST_SUCCESS,
@@ -17,146 +16,65 @@ import {
   TENANT_DETAILS_FAIL,
 } from '../constants/tenantConstant';
 
-// 🌟 API URL — make sure REACT_APP_API_URL is set in Netlify
-const apiUrl = process.env.REACT_APP_API_URL || 'https://task1-v3ir.vercel.app';
+import {
+  fetchTenants,
+  createTenant as apiCreateTenant,
+  updateTenant as apiUpdateTenant,
+  deleteTenant as apiDeleteTenant,
+  getTenantDetails as apiGetTenantDetails,
+} from '../../api';  // adjust path if needed
 
-// 🔹 List all tenants
+// List tenants
 export const listTenants = () => async (dispatch) => {
   try {
     dispatch({ type: TENANT_LIST_REQUEST });
-    const { data } = await axios.get(`${apiUrl}/api/tenants`);
+    const data = await fetchTenants();
     dispatch({ type: TENANT_LIST_SUCCESS, payload: data });
   } catch (error) {
-    dispatch({
-      type: TENANT_LIST_FAIL,
-      payload: error.response?.data?.message || error.message,
-    });
+    dispatch({ type: TENANT_LIST_FAIL, payload: error.message });
   }
 };
 
-// 🔹 Create a new tenant
-export const createTenant = (tenantData) => async (dispatch, getState) => {
+// Create tenant
+export const createTenant = (tenantData) => async (dispatch) => {
   try {
     dispatch({ type: TENANT_CREATE_REQUEST });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    if (!userInfo || !userInfo.token) {
-      throw new Error('User authentication required');
-    }
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
-    const payload = {
-      ...tenantData,
-      createdBy: userInfo.userId || userInfo._id,
-    };
-
-    const { data } = await axios.post(`${apiUrl}/api/tenants`, payload, config);
-
+    const data = await apiCreateTenant(tenantData);
     dispatch({ type: TENANT_CREATE_SUCCESS, payload: data });
   } catch (error) {
-    dispatch({
-      type: TENANT_CREATE_FAIL,
-      payload: error.response?.data?.message || error.message,
-    });
+    dispatch({ type: TENANT_CREATE_FAIL, payload: error.message });
   }
 };
 
-// 🔹 Update a tenant
-export const updateTenant = (id, tenantData) => async (dispatch, getState) => {
+// Update tenant
+export const updateTenant = (id, tenantData) => async (dispatch) => {
   try {
     dispatch({ type: TENANT_UPDATE_REQUEST });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    if (!userInfo || !userInfo.token) {
-      throw new Error('User not authenticated');
-    }
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
-    const { data } = await axios.put(`${apiUrl}/api/tenants/${id}`, tenantData, config);
-
+    const data = await apiUpdateTenant(id, tenantData);
     dispatch({ type: TENANT_UPDATE_SUCCESS, payload: data });
   } catch (error) {
-    dispatch({
-      type: TENANT_UPDATE_FAIL,
-      payload: error.response?.data?.message || error.message,
-    });
+    dispatch({ type: TENANT_UPDATE_FAIL, payload: error.message });
   }
 };
 
-// 🔹 Delete a tenant
-export const deleteTenant = (id) => async (dispatch, getState) => {
+// Delete tenant
+export const deleteTenant = (id) => async (dispatch) => {
   try {
     dispatch({ type: TENANT_DELETE_REQUEST });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    if (!userInfo || !userInfo.token) {
-      throw new Error('User not authenticated');
-    }
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
-    await axios.delete(`${apiUrl}/api/tenants/${id}`, config);
-
+    await apiDeleteTenant(id);
     dispatch({ type: TENANT_DELETE_SUCCESS, payload: id });
   } catch (error) {
-    dispatch({
-      type: TENANT_DELETE_FAIL,
-      payload: error.response?.data?.message || error.message,
-    });
+    dispatch({ type: TENANT_DELETE_FAIL, payload: error.message });
   }
 };
 
-// 🔹 Get details of a single tenant
-export const getTenantDetails = (id) => async (dispatch, getState) => {
+// Get tenant details
+export const getTenantDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: TENANT_DETAILS_REQUEST });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    if (!userInfo || !userInfo.token) {
-      throw new Error('User not authenticated');
-    }
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
-    const { data } = await axios.get(`${apiUrl}/api/tenants/${id}`, config);
-
+    const data = await apiGetTenantDetails(id);
     dispatch({ type: TENANT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
-    dispatch({
-      type: TENANT_DETAILS_FAIL,
-      payload: error.response?.data?.message || error.message,
-    });
+    dispatch({ type: TENANT_DETAILS_FAIL, payload: error.message });
   }
 };

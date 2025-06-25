@@ -9,64 +9,65 @@ import {
   USER_REGISTER_FAIL,
 } from '../constants/userConstants';
 
-// Your API URL
-const apiUrl = process.env.REACT_APP_API_URL || 'https://task1-v3ir.vercel.app';
+// Get API base URL from env or fallback
+const API_URL = process.env.REACT_APP_API_URL || 'https://task1-v3ir.vercel.app';
 
 /**
  * User login action
+ * @param {string} email 
+ * @param {string} password 
  */
 export const login = (email, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_LOGIN_REQUEST });
 
     const config = {
-      headers: { 
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
     };
 
     const { data } = await axios.post(
-      `${apiUrl}/api/auth/login`, 
-      { email, password }, 
+      `${API_URL}/api/auth/login`,
+      { email, password },
       config
     );
 
-    dispatch({ 
-      type: USER_LOGIN_SUCCESS, 
-      payload: data 
-    });
+    dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
     localStorage.setItem('userInfo', JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
-      payload: error.response?.data?.message || 
-              error.message ||
-              'Login failed. Please try again.',
+      payload:
+        error.response?.data?.message ||
+        error.message ||
+        'Login failed. Please try again.',
     });
   }
 };
 
 /**
  * User registration action
+ * @param {string} username 
+ * @param {string} email 
+ * @param {string} password 
  */
 export const register = (username, email, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_REGISTER_REQUEST });
 
     const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
     };
 
     const { data } = await axios.post(
-      `${apiUrl}/api/auth/signup`,
+      `${API_URL}/api/auth/signup`,
       { username, email, password },
       config
     );
 
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
+    dispatch({ type: USER_LOGIN_SUCCESS, payload: data }); // auto-login after register
+
     localStorage.setItem('userInfo', JSON.stringify(data));
   } catch (error) {
     dispatch({
@@ -74,7 +75,7 @@ export const register = (username, email, password) => async (dispatch) => {
       payload:
         error.response?.data?.message ||
         error.message ||
-        'Registration failed',
+        'Registration failed. Please try again.',
     });
   }
 };
@@ -84,11 +85,12 @@ export const register = (username, email, password) => async (dispatch) => {
  */
 export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo');
-  dispatch({ type: USER_LOGOUT });
   localStorage.removeItem('cartItems');
   localStorage.removeItem('shippingAddress');
   localStorage.removeItem('paymentMethod');
+
+  dispatch({ type: USER_LOGOUT });
 };
 
-// Alias
+// For backward compatibility
 export const signup = register;

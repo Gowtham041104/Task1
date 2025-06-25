@@ -82,3 +82,48 @@ export const deleteProduct = (id) => {
     headers: { ...authHeader() }
   }).then(handleResponse);
 };
+// 🟢 Fetch all tenants
+export const fetchTenants = () => {
+  return fetch(`${apiUrl}/api/tenants`, {
+    headers: { ...authHeader() }
+  }).then(handleResponse);
+};
+
+// 🟢 Create tenant
+export const createTenant = (tenantData) => {
+  return fetch(`${apiUrl}/api/tenants`, {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      ...authHeader(),
+    },
+    body: JSON.stringify(tenantData),
+  }).then(handleResponse);
+};
+
+// 🟢 Update tenant
+export const updateTenant = (id, tenantData) => {
+  return fetch(`${apiUrl}/api/tenants/${id}`, {
+    method: 'PUT',
+    headers: { 
+      'Content-Type': 'application/json',
+      ...authHeader(),
+    },
+    body: JSON.stringify(tenantData),
+  }).then(handleResponse);
+};
+
+// 🟢 Delete tenant
+export const deleteTenant = (id) => {
+  return fetch(`${apiUrl}/api/tenants/${id}`, {
+    method: 'DELETE',
+    headers: { ...authHeader() }
+  }).then(handleResponse);
+};
+
+// 🟢 Get tenant details
+export const getTenantDetails = (id) => {
+  return fetch(`${apiUrl}/api/tenants/${id}`, {
+    headers: { ...authHeader() }
+  }).then(handleResponse);
+};
