@@ -66,7 +66,6 @@ export const register = (username, email, password) => async (dispatch) => {
     );
 
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
-    dispatch({ type: USER_LOGIN_SUCCESS, payload: data }); // auto-login after register
 
     localStorage.setItem('userInfo', JSON.stringify(data));
   } catch (error) {
