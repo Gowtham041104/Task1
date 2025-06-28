@@ -14,17 +14,23 @@ const tenantSchema = new mongoose.Schema({
     type: String,
   },
   domain: {
-    type: String, // ✅ Add this
-  },
-  adminEmail: {
-    type: String, // ✅ Add this
+    type: String,
   },
   status: {
     type: String,
     enum: ['active', 'inactive'],
-    default: 'active', // ✅ Add this
+    default: 'active',
   },
-
+  plan: {
+    type: String,
+    default: 'basic',
+  },
+  subscribedProducts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product',
+    }
+  ],
 }, { timestamps: true });
 
 module.exports = mongoose.model('Tenant', tenantSchema);
